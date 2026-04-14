@@ -1,0 +1,6 @@
+Sot instalova dhe testova me sukses një C compiler në kompjuter duke përdorur Code::Blocks.
+Krijova programin tim të parë në C, Hello World, dhe e ekzekutova me sukses.
+Programi shfaqi rezultatin e saktë, që do të thotë se compiler-i po punon si duhet.
+Pastaj krijova branch-in tim personal me emrin Amer-Hoxha në repository të grupit.
+Kuptova që e gjithë puna duhet të ngarkohet vetëm në branch-in personal dhe jo në main branch.
+Në fund përgatita strukturën e folderit Day1 me skedarët e kërkuar.
