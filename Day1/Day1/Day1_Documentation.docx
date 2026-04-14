@@ -1,1 +1,16 @@
-
+Përmbledhje – Day 1 Task
+Në këtë detyrë kam punuar në konfigurimin fillestar të projektit për Internal Internship dhe kam përdorur Git/GitHub për menaxhimin e kodit.
+Çka kam bërë:
+Kam krijuar branch-in tim personal në Git me formatin Emri-Mbiemri.
+Kam krijuar folderin Day1 brenda repository-t.
+Brenda folderit Day1 kam shtuar 3 file të kërkuara:
+hello_world.c
+student_profile.c
+Day1_Documentation.docx Programimi në C:
+Kam shkruar programin Hello World në gjuhën C.
+Kam krijuar një program të thjeshtë student_profile.c që shfaq të dhëna bazike.
+Git/GitHub:
+Kam përdorur komandat bazë të Git:
+git add
+git commit
+git push
