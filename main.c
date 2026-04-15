@@ -1,35 +1,54 @@
 #include <stdio.h>
 
 int main() {
-    int dita;
+    int mosha;
+    char iniciali;
+    double pikeParaprake;
+    int opsioniPunetorise;
 
-    printf("Shkruaj nje numer nga 1 deri ne 7: ");
-    scanf("%d", &dita);
+    printf("Shkruaj moshen: ");
+    scanf("%d", &mosha);
 
-    switch (dita) {
+    printf("Shkruaj inicialin: ");
+    scanf(" %c", &iniciali);
+
+    printf("Shkruaj piket paraprake: ");
+    scanf("%lf", &pikeParaprake);
+
+    printf("Zgjedh punetorine (1, 2 ose 3): ");
+    scanf("%d", &opsioniPunetorise);
+
+    printf("\n===== PERMBLEDHJA E REGJISTRIMIT =====\n");
+    printf("Mosha: %d\n", mosha);
+    printf("Iniciali: %c\n", iniciali);
+    printf("Piket paraprake: %.2lf\n", pikeParaprake);
+
+    if (mosha >= 15 && mosha <= 25) {
+        printf("Pjesemarrja sipas moshes: Lejohet\n");
+    } else {
+        printf("Pjesemarrja sipas moshes: Nuk lejohet\n");
+    }
+
+    if (pikeParaprake < 50) {
+        printf("Klasifikimi: Nevojitet me shume ushtrim\n");
+    } else if (pikeParaprake <= 80) {
+        printf("Klasifikimi: Gati per vazhdim\n");
+    } else {
+        printf("Klasifikimi: Gati per sfide\n");
+    }
+
+    switch (opsioniPunetorise) {
         case 1:
-            printf("E Hene - Dite pune\n");
+            printf("Punetoria e zgjedhur: Programim bazik\n");
             break;
         case 2:
-            printf("E Marte - Dite pune\n");
+            printf("Punetoria e zgjedhur: Web development\n");
             break;
         case 3:
-            printf("E Merkure - Dite pune\n");
-            break;
-        case 4:
-            printf("E Enjte - Dite pune\n");
-            break;
-        case 5:
-            printf("E Premte - Dite pune\n");
-            break;
-        case 6:
-            printf("E Shtune - Fundjave\n");
-            break;
-        case 7:
-            printf("E Diele - Fundjave\n");
+            printf("Punetoria e zgjedhur: Database basics\n");
             break;
         default:
-            printf("Input i pavlefshem.\n");
+            printf("Punetoria e zgjedhur: Opsion i pavlefshem\n");
             break;
     }
 
