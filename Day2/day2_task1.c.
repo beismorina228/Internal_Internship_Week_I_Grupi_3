@@ -1,0 +1,33 @@
+#include <stdio.h>
+
+int main()
+{
+    int mosha;
+    char iniciali;
+    float gjatesia;
+    double mesatarja;
+    short vitiShkollor = 11;
+    long popullsia = 1800000;
+
+    printf("Shkruaj moshen: ");
+    scanf("%d", &mosha);
+
+    printf("Shkruaj inicialin: ");
+    scanf(" %c", &iniciali);
+
+    printf("Shkruaj gjatesine: ");
+    scanf("%f", &gjatesia);
+
+    printf("Shkruaj mesataren: ");
+    scanf("%lf", &mesatarja);
+
+    printf("\n--- Profili i perdoruesit ---\n");
+    printf("Mosha: %d\n", mosha);
+    printf("Iniciali: %c\n", iniciali);
+    printf("Gjatesia: %.2f\n", gjatesia);
+    printf("Mesatarja: %.2lf\n", mesatarja);
+    printf("Viti shkollor: %hd\n", vitiShkollor);
+    printf("Popullsia: %ld\n", popullsia);
+
+    return 0;
+}
