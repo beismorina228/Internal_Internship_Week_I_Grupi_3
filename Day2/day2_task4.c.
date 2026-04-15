@@ -1,0 +1,69 @@
+#include <stdio.h>
+
+int main()
+{
+    int mosha;
+    char iniciali;
+    double piket;
+    int opsioni;
+
+    printf("Shkruaj moshen: ");
+    scanf("%d", &mosha);
+
+    printf("Shkruaj inicialin: ");
+    scanf(" %c", &iniciali);
+
+    printf("Shkruaj piket paraprake: ");
+    scanf("%lf", &piket);
+
+    printf("Zgjedh punetorine (1, 2 ose 3): ");
+    scanf("%d", &opsioni);
+
+    printf("\n--- Permbledhje e regjistrimit ---\n");
+    printf("Mosha: %d\n", mosha);
+    printf("Iniciali: %c\n", iniciali);
+    printf("Piket paraprake: %.2lf\n", piket);
+
+    if (mosha < 15)
+    {
+        printf("Pjesemarrja: Mosha nuk eshte brenda kufirit per pjesemarrje.\n");
+    }
+    else if (mosha <= 19)
+    {
+        printf("Pjesemarrja: Mosha eshte e pershtatshme per pjesemarrje.\n");
+    }
+    else
+    {
+        printf("Pjesemarrja: Mosha eshte jashte kufirit te vendosur.\n");
+    }
+
+    if (piket < 50)
+    {
+        printf("Vleresimi: Nevojitet me shume ushtrim\n");
+    }
+    else if (piket < 80)
+    {
+        printf("Vleresimi: Gati per vazhdim\n");
+    }
+    else
+    {
+        printf("Vleresimi: Gati per sfide\n");
+    }
+
+    switch (opsioni)
+    {
+        case 1:
+            printf("Punetoria e zgjedhur: Programim bazik\n");
+            break;
+        case 2:
+            printf("Punetoria e zgjedhur: Dizajn grafik\n");
+            break;
+        case 3:
+            printf("Punetoria e zgjedhur: Robotike\n");
+            break;
+        default:
+            printf("Punetoria e zgjedhur: Opsion i pavlefshem\n");
+    }
+
+    return 0;
+}
