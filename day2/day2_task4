@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+int main() {
+    int mosha;
+    char iniciali;
+    double pikeParaprake;
+    int opsioni;
+
+    printf("Shkruaj moshen: ");
+    scanf("%d", &mosha);
+
+    printf("Shkruaj inicialin: ");
+    scanf(" %c", &iniciali);
+
+    printf("Shkruaj piket paraprake: ");
+    scanf("%lf", &pikeParaprake);
+
+    printf("Zgjedh punetorine (1, 2 ose 3): ");
+    scanf("%d", &opsioni);
+
+    printf("\n--- PERMBLEDHJA E REGJISTRIMIT ---\n");
+    printf("Mosha: %d\n", mosha);
+    printf("Iniciali: %c\n", iniciali);
+    printf("Piket paraprake: %.2lf\n", pikeParaprake);
+
+    printf("\n--- KONTROLLI I MOSHES ---\n");
+    if (mosha >= 14 && mosha <= 19) {
+        printf("Mosha eshte brenda kufirit per pjesemarrje.\n");
+    } else {
+        printf("Mosha nuk eshte brenda kufirit per pjesemarrje.\n");
+    }
+
+    printf("\n--- VLERESIMI I PIKEVE ---\n");
+    if (pikeParaprake < 50) {
+        printf("Rezultati: Nevojitet me shume ushtrim.\n");
+    } else if (pikeParaprake < 80) {
+        printf("Rezultati: Gati per vazhdim.\n");
+    } else {
+        printf("Rezultati: Gati per sfide.\n");
+    }
+
+    printf("\n--- PUNETORIA E ZGJEDHUR ---\n");
+    switch (opsioni) {
+        case 1:
+            printf("Punetoria 1: Programim bazik\n");
+            break;
+        case 2:
+            printf("Punetoria 2: Algoritme bazike\n");
+            break;
+        case 3:
+            printf("Punetoria 3: Zgjidhje problemesh\n");
+            break;
+        default:
+            printf("Opsion i pavlefshem.\n");
+    }
+
+    return 0;
+}
