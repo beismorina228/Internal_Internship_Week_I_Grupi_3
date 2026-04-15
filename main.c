@@ -1,25 +1,36 @@
 #include <stdio.h>
 
 int main() {
-    int rezultati;
+    int dita;
 
-    printf("Shkruaj rezultatin nga 0 deri ne 100: ");
-    scanf("%d", &rezultati);
+    printf("Shkruaj nje numer nga 1 deri ne 7: ");
+    scanf("%d", &dita);
 
-    if (rezultati < 0 || rezultati > 100) {
-        printf("Input-i nuk eshte valid.\n");
-    }
-    else if (rezultati >= 90) {
-        printf("Vleresimi: Shkelqyeshem\n");
-    }
-    else if (rezultati >= 75) {
-        printf("Vleresimi: Shume mire\n");
-    }
-    else if (rezultati >= 60) {
-        printf("Vleresimi: Mire\n");
-    }
-    else {
-        printf("Vleresimi: Ne permiresim\n");
+    switch (dita) {
+        case 1:
+            printf("E Hene - Dite pune\n");
+            break;
+        case 2:
+            printf("E Marte - Dite pune\n");
+            break;
+        case 3:
+            printf("E Merkure - Dite pune\n");
+            break;
+        case 4:
+            printf("E Enjte - Dite pune\n");
+            break;
+        case 5:
+            printf("E Premte - Dite pune\n");
+            break;
+        case 6:
+            printf("E Shtune - Fundjave\n");
+            break;
+        case 7:
+            printf("E Diele - Fundjave\n");
+            break;
+        default:
+            printf("Input i pavlefshem.\n");
+            break;
     }
 
     return 0;
