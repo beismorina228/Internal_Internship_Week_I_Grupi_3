@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+int main() {
+    int age, option;
+    char initial;
+    double points;
+
+    // Input
+    printf("Enter your age: ");
+    scanf("%d", &age);
+
+    printf("Enter your initial: ");
+    scanf(" %c", &initial);
+
+    printf("Enter your points: ");
+    scanf("%lf", &points);
+
+    printf("Choose workshop (1-3): ");
+    scanf("%d", &option);
+
+    // Age check
+    if (age < 14) {
+        printf("Not eligible for workshop\n");
+    } else {
+        printf("Eligible for workshop\n");
+    }
+
+    // Classification
+    if (points < 50) {
+        printf("Status: Needs more practice\n");
+    }
+    else if (points < 75) {
+        printf("Status: Ready to continue\n");
+    }
+    else {
+        printf("Status: Ready for challenge\n");
+    }
+
+    // Switch for workshop
+    switch(option) {
+        case 1:
+            printf("Workshop: Programming Basics\n");
+            break;
+        case 2:
+            printf("Workshop: Web Development\n");
+            break;
+        case 3:
+            printf("Workshop: Data Analysis\n");
+            break;
+        default:
+            printf("Invalid workshop option\n");
+    }
+
+    // Summary
+    printf("\n--- Summary ---\n");
+    printf("Age: %d\n", age);
+    printf("Initial: %c\n", initial);
+    printf("Points: %.2lf\n", points);
+    printf("Option: %d\n", option);
+
+    return 0;
+}
