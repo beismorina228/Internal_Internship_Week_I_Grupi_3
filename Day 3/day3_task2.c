@@ -7,21 +7,21 @@ int main()
     int evenSum = 0, oddSum = 0;
     int totalValues = 0;
 
-    printf("=== Day 3 - Task 2 ===\n");
+    printf("Day 3 - Task 2\n");
     printf("Vendos vleren fillestare: ");
     scanf("%d", &start);
 
     printf("Vendos vleren perfundimtare: ");
     scanf("%d", &end);
 
-    // Validimi i intervalit
+    
     if (start > end)
     {
         printf("Interval i pavlefshem! Vlera fillestare duhet te jete me e vogel ose e barabarte me vleren perfundimtare.\n");
         return 1;
     }
 
-    // Analiza e intervalit
+    
     for (int i = start; i <= end; i++)
     {
         totalValues++;
@@ -38,7 +38,7 @@ int main()
         }
     }
 
-    // Output
+ 
     printf("\n--- Rezultatet ---\n");
     printf("Intervali: %d deri %d\n", start, end);
     printf("Totali i vlerave: %d\n", totalValues);
