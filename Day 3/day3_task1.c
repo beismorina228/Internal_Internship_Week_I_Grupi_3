@@ -4,11 +4,11 @@ int main()
 {
     int size, choice;
 
-    printf("=== Day 3 - Task 1 ===\n");
+    printf("Day 3 - Task 1 \n");
     printf("Enter pattern size (1 - 12): ");
     scanf("%d", &size);
 
-    // Input validation
+    
     if (size < 1 || size > 12)
     {
         printf("Invalid input! Please enter a number between 1 and 12.\n");
