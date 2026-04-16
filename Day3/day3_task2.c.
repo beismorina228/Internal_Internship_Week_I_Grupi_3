@@ -1,0 +1,67 @@
+#include <stdio.h>
+
+int main()
+{
+    int start, end;
+    int evenCount = 0, oddCount = 0;
+    int evenSum = 0, oddSum = 0;
+    int totalNumbers = 0;
+
+    printf("Shkruaj vleren fillestare: ");
+    scanf("%d", &start);
+
+    printf("Shkruaj vleren perfundimtare: ");
+    scanf("%d", &end);
+
+    // Kontrolli i intervalit
+    if (start > end)
+    {
+        printf("Interval i pavlefshem. Vlera fillestare duhet te jete me e vogel ose e barabarte me vleren perfundimtare.\n");
+        return 1;
+    }
+
+    // Loop per analizim
+    for (int i = start; i <= end; i++)
+    {
+        totalNumbers++;
+
+        if (i % 2 == 0)
+        {
+            evenCount++;
+            evenSum += i;
+        }
+        else
+        {
+            oddCount++;
+            oddSum += i;
+        }
+    }
+
+    // Output
+    printf("\n--- Rezultatet ---\n");
+    printf("Intervali: [%d - %d]\n", start, end);
+    printf("Totali i numrave: %d\n", totalNumbers);
+
+    printf("\nNumra cift: %d\n", evenCount);
+    printf("Shuma e numrave cift: %d\n", evenSum);
+
+    printf("\nNumra tek: %d\n", oddCount);
+    printf("Shuma e numrave tek: %d\n", oddSum);
+
+    // Krahasimi
+    printf("\nKategoria me me shume numra: ");
+    if (evenCount > oddCount)
+    {
+        printf("Numrat cift\n");
+    }
+    else if (oddCount > evenCount)
+    {
+        printf("Numrat tek\n");
+    }
+    else
+    {
+        printf("Te barabarte\n");
+    }
+
+    return 0;
+}
