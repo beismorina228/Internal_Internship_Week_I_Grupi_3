@@ -1,0 +1,74 @@
+#include <stdio.h>
+
+int main()
+{
+    int number;
+    double amount;
+
+    int *pNumber;
+    double *pAmount;
+
+    int oldNumber;
+    double oldAmount;
+
+    printf("Shkruaj nje numer int: ");
+    scanf("%d", &number);
+
+    printf("Shkruaj nje numer double: ");
+    scanf("%lf", &amount);
+
+    oldNumber = number;
+    oldAmount = amount;
+
+    pNumber = &number;
+    pAmount = &amount;
+
+    printf("\n--- Vlerat fillestare ---\n");
+    printf("number direkt = %d\n", number);
+    printf("amount direkt = %.2lf\n", amount);
+
+    printf("\n--- Adresat ne memorie ---\n");
+    printf("Adresa e number = %p\n", (void*)&number);
+    printf("Adresa e amount = %p\n", (void*)&amount);
+
+    printf("\n--- Vlerat permes pointerave ---\n");
+    printf("Vlera e number permes pointer-it = %d\n", *pNumber);
+    printf("Vlera e amount permes pointer-it = %.2lf\n", *pAmount);
+
+    *pNumber = *pNumber + 10;
+    *pAmount = *pAmount * 1.50;
+
+    printf("\n--- Pas ndryshimit me pointer ---\n");
+    printf("number para = %d, number pas = %d\n", oldNumber, number);
+    printf("amount para = %.2lf, amount pas = %.2lf\n", oldAmount, amount);
+
+    printf("\n--- Analiza me if/else ---\n");
+
+    if (number > oldNumber)
+    {
+        printf("Vlera perfundimtare e number eshte rritur.\n");
+    }
+    else if (number < oldNumber)
+    {
+        printf("Vlera perfundimtare e number eshte zvogeluar.\n");
+    }
+    else
+    {
+        printf("Vlera perfundimtare e number ka mbetur e njejte.\n");
+    }
+
+    if (amount >= 0 && amount <= 100)
+    {
+        printf("Vlera perfundimtare e amount hyn ne intervalin 0 deri 100.\n");
+    }
+    else if (amount < 0)
+    {
+        printf("Vlera perfundimtare e amount eshte negative.\n");
+    }
+    else
+    {
+        printf("Vlera perfundimtare e amount eshte me e madhe se 100.\n");
+    }
+
+    return 0;
+}
