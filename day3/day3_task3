@@ -1,0 +1,60 @@
+#include <stdio.h>
+
+int main() {
+    int start, end;
+
+    int countDiv3 = 0, sumDiv3 = 0;
+    int countDiv5 = 0, sumDiv5 = 0;
+
+    // Input
+    printf("Shkruani fillimin e intervalit: ");
+    scanf("%d", &start);
+
+    printf("Shkruani fundin e intervalit: ");
+    scanf("%d", &end);
+
+    // Validimi
+    if (start > end) {
+        printf("Interval i pavlefshem! Fillimi duhet te jete <= fundi.\n");
+        return 1;
+    }
+
+    // Loop
+    for (int i = start; i <= end; i++) {
+
+        // Kategoria 1: pjesetohet me 3
+        if (i % 3 == 0) {
+            countDiv3++;
+            sumDiv3 += i;
+        }
+        // Kategoria 2: pjesetohet me 5 POR JO me 3
+        else if (i % 5 == 0) {
+            countDiv5++;
+            sumDiv5 += i;
+        }
+    }
+
+    // Output
+    printf("\n--- Rezultati ---\n");
+    printf("Intervali: [%d, %d]\n", start, end);
+
+    printf("\nNumrat qe pjesetohen me 3:\n");
+    printf("Numeruesi: %d\n", countDiv3);
+    printf("Shuma: %d\n", sumDiv3);
+
+    printf("\nNumrat qe pjesetohen me 5 (por jo me 3):\n");
+    printf("Numeruesi: %d\n", countDiv5);
+    printf("Shuma: %d\n", sumDiv5);
+
+    // Krahasimi i shumave
+    printf("\n--- Krahasimi ---\n");
+    if (sumDiv3 > sumDiv5) {
+        printf("Shuma e numrave qe pjesetohen me 3 eshte me e madhe.\n");
+    } else if (sumDiv5 > sumDiv3) {
+        printf("Shuma e numrave qe pjesetohen me 5 eshte me e madhe.\n");
+    } else {
+        printf("Shumat jane te barabarta.\n");
+    }
+
+    return 0;
+}
