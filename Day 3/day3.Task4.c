@@ -37,7 +37,7 @@ int main()
     
     *pNum = *pNum + 10;
 
-    printf("\n--- After Change ---\n");
+    printf("\n-After Change -\n");
     printf("Updated integer value: %d\n", num);
     printf("Updated through pointer: %d\n", *pNum);
 
