@@ -46,7 +46,7 @@ int main() {
 
     
 
-    printf("\n--- PROFILI Im ---\n"); 
+    printf("\n -PROFILI Im-\n"); 
 
     printf("Mosha: %d\n", mosha); 
 
