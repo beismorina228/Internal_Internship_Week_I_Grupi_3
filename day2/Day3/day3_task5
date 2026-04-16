@@ -1,0 +1,63 @@
+#include <stdio.h>
+
+// Krijimi i enum-it
+enum Level {
+    BEGINNER = 1,
+    INTERMEDIATE,
+    ADVANCED,
+    EXPERT
+};
+
+int main() {
+    int choice;
+    int validCount = 0, invalidCount = 0;
+
+    // Loop per 3 raste testimi
+    for (int i = 1; i <= 3; i++) {
+
+        printf("\n--- Rasti %d ---\n", i);
+        printf("Zgjidh nivelin:\n");
+        printf("1 - Beginner\n");
+        printf("2 - Intermediate\n");
+        printf("3 - Advanced\n");
+        printf("4 - Expert\n");
+        printf("Zgjedhja juaj: ");
+        scanf("%d", &choice);
+
+        // Kontrolli me switch
+        switch (choice) {
+
+            case BEGINNER:
+                printf("Ju jeni fillestar. Filloni me bazat.\n");
+                validCount++;
+                break;
+
+            case INTERMEDIATE:
+                printf("Ju jeni ne nivel mesatar. Vazhdoni praktiken.\n");
+                validCount++;
+                break;
+
+            case ADVANCED:
+                printf("Ju jeni ne nivel te avancuar. Provoni sfida me te veshtira.\n");
+                validCount++;
+                break;
+
+            case EXPERT:
+                printf("Ju jeni ekspert! Vazhdoni me projekte reale.\n");
+                validCount++;
+                break;
+
+            default:
+                printf("Zgjedhje e pavlefshme!\n");
+                invalidCount++;
+                break;
+        }
+    }
+
+    // Statistikat
+    printf("\n--- STATISTIKAT ---\n");
+    printf("Zgjedhje valide: %d\n", validCount);
+    printf("Zgjedhje te pavlefshme: %d\n", invalidCount);
+
+    return 0;
+}
