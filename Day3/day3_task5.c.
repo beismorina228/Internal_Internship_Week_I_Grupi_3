@@ -1,0 +1,81 @@
+#include <stdio.h>
+
+enum StudentLevel
+{
+    BEGINNER = 1,
+    INTERMEDIATE = 2,
+    ADVANCED = 3,
+    EXPERT = 4
+};
+
+int main()
+{
+    int choice;
+    int validCount = 0;
+    int invalidCount = 0;
+
+    int beginnerCount = 0;
+    int intermediateCount = 0;
+    int advancedCount = 0;
+    int expertCount = 0;
+
+    enum StudentLevel level;
+
+    for (int i = 1; i <= 3; i++)
+    {
+        printf("\n--- Perdoruesi %d ---\n", i);
+        printf("Zgjedh nivelin:\n");
+        printf("1. Beginner\n");
+        printf("2. Intermediate\n");
+        printf("3. Advanced\n");
+        printf("4. Expert\n");
+        printf("Zgjedhja juaj: ");
+        scanf("%d", &choice);
+
+        if (choice >= 1 && choice <= 4)
+        {
+            level = (enum StudentLevel)choice;
+            validCount++;
+
+            switch (level)
+            {
+                case BEGINNER:
+                    printf("Nxenesi eshte ne nivelin Beginner. Duhet te vazhdoje me ushtrime bazike.\n");
+                    beginnerCount++;
+                    break;
+
+                case INTERMEDIATE:
+                    printf("Nxenesi eshte ne nivelin Intermediate. Ka kuptim te mire te bazave.\n");
+                    intermediateCount++;
+                    break;
+
+                case ADVANCED:
+                    printf("Nxenesi eshte ne nivelin Advanced. Mund te punoje me detyra me te veshtira.\n");
+                    advancedCount++;
+                    break;
+
+                case EXPERT:
+                    printf("Nxenesi eshte ne nivelin Expert. Eshte gati per sfida te avancuara.\n");
+                    expertCount++;
+                    break;
+            }
+        }
+        else
+        {
+            printf("Input i pavlefshem. Duhet te zgjidhni nje vlere nga 1 deri ne 4.\n");
+            invalidCount++;
+        }
+    }
+
+    printf("\n--- Statistikat perfundimtare ---\n");
+    printf("Zgjedhje valide: %d\n", validCount);
+    printf("Zgjedhje te pavlefshme: %d\n", invalidCount);
+
+    printf("\nNumri i zgjedhjeve per secilin nivel:\n");
+    printf("Beginner: %d\n", beginnerCount);
+    printf("Intermediate: %d\n", intermediateCount);
+    printf("Advanced: %d\n", advancedCount);
+    printf("Expert: %d\n", expertCount);
+
+    return 0;
+}
