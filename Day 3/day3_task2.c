@@ -42,7 +42,7 @@ int main()
     printf("\n--- Rezultatet ---\n");
     printf("Intervali: %d deri %d\n", start, end);
     printf("Totali i vlerave: %d\n", totalValues);
-    printf("Numrat çift: %d\n", evenCount);
+    printf("Numrat cift: %d\n", evenCount);
     printf("Numrat tek: %d\n", oddCount);
     printf("Shuma e numrave çift: %d\n", evenSum);
     printf("Shuma e numrave tek: %d\n", oddSum);
