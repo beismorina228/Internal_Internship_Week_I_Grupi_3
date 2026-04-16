@@ -1,1 +1,0 @@
-# Internal_Internship_Week_I_Grupi_3
