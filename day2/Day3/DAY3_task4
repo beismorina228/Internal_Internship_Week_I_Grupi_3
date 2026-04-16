@@ -1,0 +1,61 @@
+#include <stdio.h>
+
+int main() {
+    int num1, originalNum1;
+    float num2;
+    
+    int *pNum1;
+    float *pNum2;
+
+    // Input
+    printf("Shkruani nje vlere int: ");
+    scanf("%d", &num1);
+
+    printf("Shkruani nje vlere float: ");
+    scanf("%f", &num2);
+
+    // Ruajme vleren fillestare te num1 per krahasim
+    originalNum1 = num1;
+
+    // Pointer-at marrin adresat
+    pNum1 = &num1;
+    pNum2 = &num2;
+
+    // Shfaqja e vlerave dhe adresave
+    printf("\n--- VLERA DHE ADRESA NE MEMORIE ---\n");
+    printf("num1 (direkt) = %d\n", num1);
+    printf("Adresa e num1 = %p\n", (void*)&num1);
+    printf("Vlera e num1 permes pointer-it = %d\n", *pNum1);
+
+    printf("\nnum2 (direkt) = %.2f\n", num2);
+    printf("Adresa e num2 = %p\n", (void*)&num2);
+    printf("Vlera e num2 permes pointer-it = %.2f\n", *pNum2);
+
+    // Ndryshimi i vleres permes pointer-it
+    printf("\n--- NDRYSHIMI I VLERES PERMES POINTER-IT ---\n");
+    printf("Vlera e num1 para ndryshimit = %d\n", num1);
+
+    *pNum1 = *pNum1 + 10;
+
+    printf("Vlera e num1 pas ndryshimit = %d\n", num1);
+
+    // Kontrolli me if/else
+    printf("\n--- ANALIZA PERFUNDIMTARE ---\n");
+
+    if (num1 > originalNum1) {
+        printf("Vlera perfundimtare e num1 eshte rritur.\n");
+    } else if (num1 < originalNum1) {
+        printf("Vlera perfundimtare e num1 eshte zvogeluar.\n");
+    } else {
+        printf("Vlera perfundimtare e num1 ka mbetur e njejte.\n");
+    }
+
+    // Kontroll shtese per interval
+    if (num1 >= 0 && num1 <= 50) {
+        printf("Vlera perfundimtare e num1 hyn ne intervalin [0, 50].\n");
+    } else {
+        printf("Vlera perfundimtare e num1 nuk hyn ne intervalin [0, 50].\n");
+    }
+
+    return 0;
+}
