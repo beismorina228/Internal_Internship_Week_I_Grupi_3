@@ -1,0 +1,53 @@
+#include <stdio.h>
+
+// Enum definition
+enum Level {
+    BEGINNER = 1,
+    INTERMEDIATE,
+    ADVANCED,
+    EXPERT
+};
+
+int main() {
+    int choice;
+    int validCount = 0, invalidCount = 0;
+
+    // Loop for 3 inputs
+    for (int i = 1; i <= 3; i++) {
+        printf("\nEnter level (1-4): ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+            case BEGINNER:
+                printf("You are a Beginner\n");
+                validCount++;
+                break;
+
+            case INTERMEDIATE:
+                printf("You are Intermediate\n");
+                validCount++;
+                break;
+
+            case ADVANCED:
+                printf("You are Advanced\n");
+                validCount++;
+                break;
+
+            case EXPERT:
+                printf("You are Expert\n");
+                validCount++;
+                break;
+
+            default:
+                printf("Invalid choice\n");
+                invalidCount++;
+        }
+    }
+
+    // Final stats
+    printf("\n--- RESULTS ---\n");
+    printf("Valid inputs: %d\n", validCount);
+    printf("Invalid inputs: %d\n", invalidCount);
+
+    return 0;
+}
