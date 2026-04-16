@@ -1,0 +1,65 @@
+#include <stdio.h>
+
+int main() {
+    int a;
+    float b;
+
+    // Input
+    printf("Shkruani nje numer integer: ");
+    scanf("%d", &a);
+
+    printf("Shkruani nje numer float: ");
+    scanf("%f", &b);
+
+    // Pointera
+    int *pA = &a;
+    float *pB = &b;
+
+    // Printimi fillestar
+    printf("\n--- Vlerat Fillestare ---\n");
+    printf("a = %d, adresa = %p, permes pointer = %d\n", a, pA, *pA);
+    printf("b = %.2f, adresa = %p, permes pointer = %.2f\n", b, pB, *pB);
+
+    // Ruajmë vlerat e vjetra për krahasim
+    int oldA = a;
+    float oldB = b;
+
+    // Ndryshimi përmes pointer-it
+    *pA = *pA + 10;
+    *pB = *pB * 2;
+
+    // Printimi pas ndryshimit
+    printf("\n--- Pas Ndryshimit ---\n");
+    printf("a = %d, permes pointer = %d\n", a, *pA);
+    printf("b = %.2f, permes pointer = %.2f\n", b, *pB);
+
+    // Krahasimi për a
+    printf("\n--- Analiza per a ---\n");
+    if (a > oldA) {
+        printf("Vlera e a eshte rritur.\n");
+    } else if (a < oldA) {
+        printf("Vlera e a eshte zvogeluar.\n");
+    } else {
+        printf("Vlera e a ka mbetur e njejte.\n");
+    }
+
+    // Krahasimi për b
+    printf("\n--- Analiza per b ---\n");
+    if (b > oldB) {
+        printf("Vlera e b eshte rritur.\n");
+    } else if (b < oldB) {
+        printf("Vlera e b eshte zvogeluar.\n");
+    } else {
+        printf("Vlera e b ka mbetur e njejte.\n");
+    }
+
+    // Kontroll shtesë me interval
+    printf("\n--- Kontroll Intervali per a ---\n");
+    if (a >= 0 && a <= 50) {
+        printf("a eshte brenda intervalit [0, 50].\n");
+    } else {
+        printf("a eshte jashte intervalit [0, 50].\n");
+    }
+
+    return 0;
+}
