@@ -37,7 +37,7 @@ int main()
     }
 
     
-    printf("\n--- Rezultatet ---\n");
+    printf("\n-Rezultatet -\n");
     printf("Intervali: %d deri %d\n", start, end);
 
     printf("Numrat qe pjesetohen me 3: %d\n", countDiv3);
