@@ -10,7 +10,7 @@ int main() {
     scanf("%d", &mosha);
 
     printf("Shkruaj inicialin: ");
-    scanf(" %c", &iniciali); // hapësira para %c është shumë e rëndësishme
+    scanf(" %c", &iniciali);
 
     printf("Shkruaj pike paraprake: ");
     scanf("%lf", &pike);
