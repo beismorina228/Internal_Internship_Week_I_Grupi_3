@@ -1,0 +1,67 @@
+#include <stdio.h>
+
+int main()
+{
+    int start, end;
+
+    int countDiv3 = 0, sumDiv3 = 0;
+    int countDiv5 = 0, sumDiv5 = 0;
+
+    printf("Shkruaj vleren fillestare: ");
+    scanf("%d", &start);
+
+    printf("Shkruaj vleren perfundimtare: ");
+    scanf("%d", &end);
+
+    // Kontrolli i intervalit
+    if (start > end)
+    {
+        printf("Interval i pavlefshem. Fillimi duhet te jete me i vogel ose i barabarte me fundin.\n");
+        return 1;
+    }
+
+    // Loop per analizim
+    for (int i = start; i <= end; i++)
+    {
+        // Numrat qe pjestohen me 3
+        if (i % 3 == 0)
+        {
+            countDiv3++;
+            sumDiv3 += i;
+        }
+        // Numrat qe pjestohen me 5 por JO me 3
+        else if (i % 5 == 0)
+        {
+            countDiv5++;
+            sumDiv5 += i;
+        }
+    }
+
+    // Output
+    printf("\n--- Rezultatet ---\n");
+    printf("Intervali: [%d - %d]\n", start, end);
+
+    printf("\nNumra qe pjestohen me 3: %d\n", countDiv3);
+    printf("Shuma e tyre: %d\n", sumDiv3);
+
+    printf("\nNumra qe pjestohen me 5 (jo me 3): %d\n", countDiv5);
+    printf("Shuma e tyre: %d\n", sumDiv5);
+
+    // Krahasimi i shumave
+    printf("\nKrahasimi i shumave:\n");
+
+    if (sumDiv3 > sumDiv5)
+    {
+        printf("Shuma e numrave qe pjestohen me 3 eshte me e madhe.\n");
+    }
+    else if (sumDiv5 > sumDiv3)
+    {
+        printf("Shuma e numrave qe pjestohen me 5 eshte me e madhe.\n");
+    }
+    else
+    {
+        printf("Shumat jane te barabarta.\n");
+    }
+
+    return 0;
+}
