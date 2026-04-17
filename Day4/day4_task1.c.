@@ -1,0 +1,153 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX_RECORDS 5
+#define NAME_LENGTH 50
+
+typedef enum
+{
+    NOT_STARTED = 1,
+    IN_PROGRESS,
+    COMPLETED
+} Status;
+
+typedef struct
+{
+    int id;
+    char name[NAME_LENGTH];
+    float progress;
+    Status status;
+} StudentRecord;
+
+void clearInputBuffer()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+    {
+    }
+}
+
+const char *getStatusText(Status status)
+{
+    switch (status)
+    {
+        case NOT_STARTED:
+            return "Not Started";
+        case IN_PROGRESS:
+            return "In Progress";
+        case COMPLETED:
+            return "Completed";
+        default:
+            return "Unknown";
+    }
+}
+
+Status determineStatus(float progress)
+{
+    if (progress == 0)
+    {
+        return NOT_STARTED;
+    }
+    else if (progress > 0 && progress < 100)
+    {
+        return IN_PROGRESS;
+    }
+    else
+    {
+        return COMPLETED;
+    }
+}
+
+void addRecord(StudentRecord records[], int *count)
+{
+    if (*count >= MAX_RECORDS)
+    {
+        printf("\nMaximum limit reached. You cannot add more records.\n");
+        return;
+    }
+
+    printf("\nEnter student ID: ");
+    scanf("%d", &records[*count].id);
+    clearInputBuffer();
+
+    printf("Enter student name: ");
+    fgets(records[*count].name, NAME_LENGTH, stdin);
+    records[*count].name[strcspn(records[*count].name, "\n")] = '\0';
+
+    printf("Enter progress (0 - 100): ");
+    scanf("%f", &records[*count].progress);
+
+    if (records[*count].progress < 0 || records[*count].progress > 100)
+    {
+        printf("Invalid progress value.\n");
+        return;
+    }
+
+    records[*count].status = determineStatus(records[*count].progress);
+
+    (*count)++;
+
+    printf("Record added successfully.\n");
+}
+
+void displayRecords(StudentRecord records[], int count)
+{
+    int i;
+
+    if (count == 0)
+    {
+        printf("\nNo records stored yet.\n");
+        return;
+    }
+
+    printf("\n===== STORED RECORDS =====\n");
+
+    for (i = 0; i < count; i++)
+    {
+        printf("\nRecord %d\n", i + 1);
+        printf("ID: %d\n", records[i].id);
+        printf("Name: %s\n", records[i].name);
+        printf("Progress: %.2f%%\n", records[i].progress);
+        printf("Status: %s\n", getStatusText(records[i].status));
+    }
+}
+
+void showMenu()
+{
+    printf("\n===== STUDENT PROGRESS TRACKER =====\n");
+    printf("1. Add record\n");
+    printf("2. Display all records\n");
+    printf("3. Exit\n");
+    printf("Choose an option: ");
+}
+
+int main()
+{
+    StudentRecord records[MAX_RECORDS];
+    int count = 0;
+    int choice;
+
+    do
+    {
+        showMenu();
+        scanf("%d", &choice);
+
+        switch (choice)
+        {
+            case 1:
+                addRecord(records, &count);
+                break;
+            case 2:
+                displayRecords(records, count);
+                break;
+            case 3:
+                printf("Program closed.\n");
+                break;
+            default:
+                printf("Invalid option. Try again.\n");
+        }
+    }
+    while (choice != 3);
+
+    return 0;
+}
