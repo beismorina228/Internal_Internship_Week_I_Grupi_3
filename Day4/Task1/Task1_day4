@@ -1,0 +1,77 @@
+#include <stdio.h>
+
+#define MAX 5
+
+struct Student {
+    int id;
+    char name[50];
+    float score;
+};
+
+int main() {
+    struct Student students[MAX];
+    int count = 0;
+    int choice;
+
+    do {
+        printf("\n========== MENU ==========\n");
+        printf("1. Add Student\n");
+        printf("2. Show Students\n");
+        printf("3. Exit\n");
+        printf("==========================\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+
+            case 1:
+                if (count >= MAX) {
+                    printf("\n[ERROR] Maximum limit reached! Cannot add more students.\n");
+                } else {
+                    printf("\n--- Add Student ---\n");
+
+                    printf("Enter ID: ");
+                    scanf("%d", &students[count].id);
+
+                    printf("Enter Name: ");
+                    scanf("%s", students[count].name);
+
+                    printf("Enter Score: ");
+                    scanf("%f", &students[count].score);
+
+                    count++;
+
+                    printf("[SUCCESS] Student added successfully!\n");
+                }
+                break;
+
+            case 2:
+                if (count == 0) {
+                    printf("\n[INFO] No records found!\n");
+                } else {
+                    printf("\n======= STUDENT LIST =======\n");
+
+                    for (int i = 0; i < count; i++) {
+                        printf("ID: %-3d | Name: %-10s | Score: %.2f\n",
+                               students[i].id,
+                               students[i].name,
+                               students[i].score);
+                    }
+
+                    printf("============================\n");
+                }
+                break;
+
+            case 3:
+                printf("\nExiting program... Goodbye!\n");
+                break;
+
+            default:
+                printf("\n[ERROR] Invalid choice! Try again.\n");
+        }
+
+    } while(choice != 3);
+
+    return 0;
+}
