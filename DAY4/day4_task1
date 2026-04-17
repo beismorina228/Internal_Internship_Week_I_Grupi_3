@@ -1,0 +1,68 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 5
+
+// Struktura për regjistrim
+struct Record {
+    char name[50];
+    int progress;
+};
+
+int main() {
+    struct Record records[MAX];
+    int count = 0;
+    int choice;
+
+    do {
+        printf("\n--- MENU ---\n");
+        printf("1. Shto regjistrim\n");
+        printf("2. Shfaq regjistrimet\n");
+        printf("3. Dil\n");
+        printf("Zgjedhja: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+
+            case 1:
+                if (count >= MAX) {
+                    printf("Kapaciteti maksimal eshte arritur!\n");
+                    break;
+                }
+
+                printf("Shkruani emrin: ");
+                scanf("%s", records[count].name);
+
+                printf("Shkruani progresin: ");
+                scanf("%d", &records[count].progress);
+
+                count++;
+                printf("Regjistrimi u shtua me sukses.\n");
+                break;
+
+            case 2:
+                if (count == 0) {
+                    printf("Nuk ka regjistrime.\n");
+                } else {
+                    printf("\n--- Lista e Regjistrimeve ---\n");
+                    for (int i = 0; i < count; i++) {
+                        printf("%d. Emri: %s, Progresi: %d%%\n",
+                               i + 1,
+                               records[i].name,
+                               records[i].progress);
+                    }
+                }
+                break;
+
+            case 3:
+                printf("Programi u mbyll.\n");
+                break;
+
+            default:
+                printf("Zgjedhje e pavlefshme!\n");
+        }
+
+    } while (choice != 3);
+
+    return 0;
+}
