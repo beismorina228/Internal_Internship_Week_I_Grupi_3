@@ -546,3 +546,128 @@ void clearInputBuffer(void) {
     }
 }
 
+//task2
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 5
+
+// Enum për statusin
+enum Status {
+    TODO = 1,
+    IN_PROGRESS,
+    DONE,
+    FAILED
+};
+
+// Struktura
+struct Record {
+    char name[50];
+    int progress;
+    enum Status status;
+};
+
+// Funksion për të kthyer statusin në tekst
+void printStatus(enum Status s) {
+    switch (s) {
+        case TODO:
+            printf("TODO");
+            break;
+        case IN_PROGRESS:
+            printf("IN_PROGRESS");
+            break;
+        case DONE:
+            printf("DONE");
+            break;
+        case FAILED:
+            printf("FAILED");
+            break;
+        default:
+            printf("UNKNOWN");
+    }
+}
+
+int main() {
+    struct Record records[MAX];
+    int count = 0;
+    int choice;
+
+    do {
+        printf("\n--- MENU ---\n");
+        printf("1. Shto regjistrim\n");
+        printf("2. Shfaq regjistrimet\n");
+        printf("3. Dil\n");
+        printf("Zgjedhja: ");
+        scanf("%d", &choice);
+
+        switch (choice) {
+
+            case 1: {
+                if (count >= MAX) {
+                    printf("Kapaciteti maksimal eshte arritur!\n");
+                    break;
+                }
+
+                printf("Shkruani emrin: ");
+                scanf("%s", records[count].name);
+
+                printf("Shkruani progresin: ");
+                scanf("%d", &records[count].progress);
+
+                int statusChoice;
+
+                printf("Zgjidhni statusin:\n");
+                printf("1 - TODO\n");
+                printf("2 - IN_PROGRESS\n");
+                printf("3 - DONE\n");
+                printf("4 - FAILED\n");
+                printf("Zgjedhja: ");
+                scanf("%d", &statusChoice);
+
+                // Validimi i statusit
+                switch (statusChoice) {
+                    case TODO:
+                    case IN_PROGRESS:
+                    case DONE:
+                    case FAILED:
+                        records[count].status = statusChoice;
+                        count++;
+                        printf("Regjistrimi u shtua me sukses.\n");
+                        break;
+
+                    default:
+                        printf("Status i pavlefshem! Regjistrimi nuk u ruajt.\n");
+                        break;
+                }
+
+                break;
+            }
+
+            case 2:
+                if (count == 0) {
+                    printf("Nuk ka regjistrime.\n");
+                } else {
+                    printf("\n--- Lista e Regjistrimeve ---\n");
+                    for (int i = 0; i < count; i++) {
+                        printf("%d. Emri: %s | Progresi: %d%% | Statusi: ",
+                               i + 1,
+                               records[i].name,
+                               records[i].progress);
+                        printStatus(records[i].status);
+                        printf("\n");
+                    }
+                }
+                break;
+
+            case 3:
+                printf("Programi u mbyll.\n");
+                break;
+
+            default:
+                printf("Zgjedhje e pavlefshme! Provo perseri.\n");
+        }
+
+    } while (choice != 3);
+
+    return 0;
+}
