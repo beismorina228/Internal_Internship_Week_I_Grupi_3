@@ -1,0 +1,182 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 5
+
+enum Status {
+    FAIL = 1,
+    PASS,
+    EXCELLENT
+};
+
+struct Student {
+    int id;
+    char name[50];
+    float score;
+    enum Status status;
+};
+
+void printStatus(enum Status s) {
+    switch(s) {
+        case FAIL: printf("FAIL"); break;
+        case PASS: printf("PASS"); break;
+        case EXCELLENT: printf("EXCELLENT"); break;
+    }
+}
+
+// 🔍 SEARCH FUNCTION
+void searchStudent(struct Student students[], int count) {
+    int searchID;
+    printf("Enter ID to search: ");
+    scanf("%d", &searchID);
+
+    int found = 0;
+
+    for (int i = 0; i < count; i++) {
+        if (students[i].id == searchID) {
+            found = 1;
+
+            printf("\n--- FOUND STUDENT ---\n");
+            printf("ID: %d | Name: %s | Score: %.2f | Status: ",
+                   students[i].id,
+                   students[i].name,
+                   students[i].score);
+            printStatus(students[i].status);
+            printf("\n");
+
+            // ⚠️ SMART MESSAGE
+            if (students[i].score < 50 && students[i].status == FAIL) {
+                printf("⚠️ Warning: Needs serious improvement!\n");
+            }
+            else if (students[i].score >= 50 && students[i].score < 80) {
+                printf("ℹ️ Good progress, keep improving.\n");
+            }
+            else if (students[i].score >= 80 && students[i].status == EXCELLENT) {
+                printf("🔥 Excellent performance! Keep it up!\n");
+            }
+        }
+    }
+
+    if (!found) {
+        printf("[INFO] No student found with that ID.\n");
+    }
+}
+
+int main() {
+    struct Student students[MAX];
+    int count = 0;
+    int choice;
+
+    do {
+        printf("\n========== MENU ==========\n");
+        printf("1. Add Student\n");
+        printf("2. Show Students\n");
+        printf("3. Report\n");
+        printf("4. Search Student\n");
+        printf("5. Exit\n");
+        printf("==========================\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+
+            case 1:
+                if (count >= MAX) {
+                    printf("[ERROR] List is full!\n");
+                    break;
+                }
+
+                printf("\n--- Add Student ---\n");
+
+                printf("Enter ID: ");
+                scanf("%d", &students[count].id);
+
+                printf("Enter Name: ");
+                scanf("%s", students[count].name);
+
+                printf("Enter Score: ");
+                scanf("%f", &students[count].score);
+
+                int st;
+                printf("Select Status:\n");
+                printf("1. FAIL\n2. PASS\n3. EXCELLENT\n");
+                printf("Choice: ");
+                scanf("%d", &st);
+
+                if (st >= 1 && st <= 3) {
+                    students[count].status = st;
+                    count++;
+                    printf("[SUCCESS] Student added!\n");
+                } else {
+                    printf("[ERROR] Invalid status!\n");
+                }
+                break;
+
+            case 2:
+                if (count == 0) {
+                    printf("[INFO] No students found!\n");
+                } else {
+                    printf("\n======= STUDENT LIST =======\n");
+
+                    for (int i = 0; i < count; i++) {
+                        printf("ID: %-3d | Name: %-10s | Score: %.2f | Status: ",
+                               students[i].id,
+                               students[i].name,
+                               students[i].score);
+                        printStatus(students[i].status);
+                        printf("\n");
+                    }
+
+                    printf("============================\n");
+                }
+                break;
+
+            case 3: {
+                if (count == 0) {
+                    printf("[INFO] No data for report!\n");
+                    break;
+                }
+
+                float sum = 0, max = students[0].score, min = students[0].score;
+
+                for (int i = 0; i < count; i++) {
+                    sum += students[i].score;
+
+                    if (students[i].score > max) max = students[i].score;
+                    if (students[i].score < min) min = students[i].score;
+                }
+
+                float avg = sum / count;
+
+                printf("\n======= REPORT =======\n");
+                printf("Total: %d\nAverage: %.2f\nMax: %.2f\nMin: %.2f\n",
+                       count, avg, max, min);
+
+                if (avg >= 80)
+                    printf("Overall: EXCELLENT\n");
+                else if (avg >= 50)
+                    printf("Overall: PASS\n");
+                else
+                    printf("Overall: NEEDS IMPROVEMENT\n");
+
+                printf("=======================\n");
+                break;
+            }
+
+            case 4:
+                searchStudent(students, count);
+                break;
+
+            case 5:
+                printf("Exiting program...\n");
+                break;
+
+            default:
+                printf("[ERROR] Invalid choice!\n");
+        }
+
+    } while(choice != 5);
+
+    return 0;
+}
