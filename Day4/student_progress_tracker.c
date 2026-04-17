@@ -9,14 +9,14 @@
 #define MAX_STUDENTS 5
 #define NAME_LEN 50
 
-/* ---------------- ENUM ---------------- */
+/* ================= ENUM ================= */
 typedef enum {
     STATUS_ACTIVE = 0,
     STATUS_PASSED = 1,
     STATUS_FAILED = 2
 } StudentStatus;
 
-/* ---------------- STRUCT ---------------- */
+/* ================= STRUCT ================= */
 typedef struct {
     int id;
     char name[NAME_LEN];
@@ -24,7 +24,7 @@ typedef struct {
     StudentStatus status;
 } Student;
 
-/* ---------------- STATUS HELPERS ---------------- */
+/* ================= HELPERS ================= */
 const char* statusToString(StudentStatus s) {
     switch (s) {
         case STATUS_ACTIVE: return "Active";
@@ -34,7 +34,7 @@ const char* statusToString(StudentStatus s) {
     }
 }
 
-/* ---------------- STATUS INPUT ---------------- */
+/* ================= STATUS INPUT ================= */
 int chooseStatus(StudentStatus *outStatus) {
     int choice;
 
@@ -60,7 +60,7 @@ int chooseStatus(StudentStatus *outStatus) {
     }
 }
 
-/* ---------------- CORE FUNCTIONS ---------------- */
+/* ================= CORE FUNCTIONS ================= */
 void fillStudent(Student *s, int id, const char *name, int score, StudentStatus status) {
     s->id = id;
     strncpy(s->name, name, NAME_LEN - 1);
@@ -86,7 +86,7 @@ void printAllStudents(const Student students[], int count) {
     }
 }
 
-/* ---------------- TASK 3 REPORT ---------------- */
+/* ================= TASK 3: REPORT ================= */
 void printReport(const Student students[], int count) {
     printf("\n  ===== ANALYTICAL REPORT =====\n");
 
@@ -103,7 +103,6 @@ void printReport(const Student students[], int count) {
 
     for (int i = 0; i < count; i++) {
         int score = students[i].score;
-
         sum += score;
 
         if (score > max) max = score;
@@ -132,7 +131,94 @@ void printReport(const Student students[], int count) {
     else printf("Poor\n");
 }
 
-/* ---------------- ADD STUDENT ---------------- */
+/* ================= TASK 4: SEARCH + FILTER ================= */
+void searchStudent(const Student students[], int count) {
+    if (count == 0) {
+        printf("\n  [!] Nuk ka te dhena per kerkim.\n");
+        return;
+    }
+
+    int choice;
+
+    printf("\n  ===== SEARCH MENU =====\n");
+    printf("  1. Search by ID\n");
+    printf("  2. Search by Name\n");
+    printf("  Zgjedhja: ");
+
+    if (scanf("%d", &choice) != 1) {
+        while (getchar() != '\n');
+        printf("  [!] Input i pavlefshem.\n");
+        return;
+    }
+
+    if (choice == 1) {
+        int id;
+        printf("  Shkruaj ID: ");
+
+        if (scanf("%d", &id) != 1) {
+            printf("  [!] ID e pavlefshme.\n");
+            return;
+        }
+
+        int found = 0;
+
+        for (int i = 0; i < count; i++) {
+            if (students[i].id == id) {
+                found = 1;
+
+                printf("\n  ===== RESULT =====\n");
+                printStudent(&students[i]);
+
+                /* SMART LOGIC */
+                if (students[i].score < 50 && students[i].status != STATUS_FAILED) {
+                    printf("  [!] WARNING: Low score but not marked failed.\n");
+                } else if (students[i].score >= 90 && students[i].status == STATUS_ACTIVE) {
+                    printf("  [!] NOTE: High performer still active.\n");
+                } else {
+                    printf("  [OK] Data is consistent.\n");
+                }
+            }
+        }
+
+        if (!found) {
+            printf("  [!] Nuk u gjet student me kete ID.\n");
+        }
+
+    } else if (choice == 2) {
+        char name[NAME_LEN];
+        printf("  Shkruaj emrin: ");
+        scanf(" %49[^\n]", name);
+
+        int found = 0;
+
+        for (int i = 0; i < count; i++) {
+            if (strcmp(students[i].name, name) == 0) {
+                found = 1;
+
+                printf("\n  ===== RESULT =====\n");
+                printStudent(&students[i]);
+
+                /* SMART LOGIC */
+                if (students[i].score < 50) {
+                    printf("  [!] WARNING: Very low performance.\n");
+                } else if (students[i].score >= 90) {
+                    printf("  [!] RECOMMENDATION: Excellent student.\n");
+                } else {
+                    printf("  [OK] Normal performance.\n");
+                }
+            }
+        }
+
+        if (!found) {
+            printf("  [!] Nuk u gjet student me kete emer.\n");
+        }
+
+    } else {
+        printf("  [!] Zgjedhje e pavlefshme.\n");
+    }
+}
+
+/* ================= ADD STUDENT ================= */
 int addStudent(Student students[], int *count) {
     if (*count >= MAX_STUDENTS) {
         printf("\n  [!] Kapaciteti u mbush.\n");
@@ -161,17 +247,18 @@ int addStudent(Student students[], int *count) {
     return 1;
 }
 
-/* ---------------- MENU ---------------- */
+/* ================= MENU ================= */
 void printMenu(int count) {
     printf("\n  ===== MENU (%d/%d) =====\n", count, MAX_STUDENTS);
     printf("  1. Add student\n");
     printf("  2. Show students\n");
     printf("  3. Show report\n");
-    printf("  4. Exit\n");
+    printf("  4. Search student\n");
+    printf("  5. Exit\n");
     printf("  Zgjedhja: ");
 }
 
-/* ---------------- MAIN ---------------- */
+/* ================= MAIN ================= */
 int main() {
     Student students[MAX_STUDENTS];
     int count = 0;
@@ -200,6 +287,10 @@ int main() {
                 break;
 
             case 4:
+                searchStudent(students, count);
+                break;
+
+            case 5:
                 printf("  Exit...\n");
                 return 0;
 
