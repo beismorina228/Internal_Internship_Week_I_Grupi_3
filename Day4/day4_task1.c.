@@ -7,7 +7,313 @@
 typedef enum
 {
     NOT_STARTED = 1,
+    #include <stdio.h>
+#include <string.h>
+
+#define MAX_RECORDS 5
+#define NAME_LENGTH 50
+
+typedef enum
+{
+    NOT_STARTED = 1,
     IN_PROGRESS = 2,
+    COMPLETED = 3
+} Status;
+
+typedef struct
+{
+    int id;
+    char name[NAME_LENGTH];
+    float progress;
+    Status status;
+} StudentRecord;
+
+void clearInputBuffer()
+{
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF)
+    {
+    }
+}
+
+int readInt(const char *message, int *value)
+{
+    printf("%s", message);
+
+    if (scanf("%d", value) != 1)
+    {
+        clearInputBuffer();
+        return 0;
+    }
+
+    clearInputBuffer();
+    return 1;
+}
+
+int readFloat(const char *message, float *value)
+{
+    printf("%s", message);
+
+    if (scanf("%f", value) != 1)
+    {
+        clearInputBuffer();
+        return 0;
+    }
+
+    clearInputBuffer();
+    return 1;
+}
+
+const char *getStatusText(Status status)
+{
+    switch (status)
+    {
+        case NOT_STARTED:
+            return "Not Started";
+        case IN_PROGRESS:
+            return "In Progress";
+        case COMPLETED:
+            return "Completed";
+        default:
+            return "Unknown";
+    }
+}
+
+Status chooseStatus()
+{
+    int choice;
+
+    printf("\nChoose status:\n");
+    printf("1. Not Started\n");
+    printf("2. In Progress\n");
+    printf("3. Completed\n");
+
+    if (!readInt("Enter status choice: ", &choice))
+    {
+        printf("Invalid input for status.\n");
+        return 0;
+    }
+
+    switch (choice)
+    {
+        case 1:
+            return NOT_STARTED;
+        case 2:
+            return IN_PROGRESS;
+        case 3:
+            return COMPLETED;
+        default:
+            printf("Invalid status choice.\n");
+            return 0;
+    }
+}
+
+void addRecord(StudentRecord records[], int *count)
+{
+    int id;
+    float progress;
+    Status status;
+
+    if (*count >= MAX_RECORDS)
+    {
+        printf("\nMaximum limit reached. You cannot add more records.\n");
+        return;
+    }
+
+    if (!readInt("\nEnter student ID: ", &id))
+    {
+        printf("Invalid ID input.\n");
+        return;
+    }
+
+    if (id <= 0)
+    {
+        printf("ID must be a positive number.\n");
+        return;
+    }
+
+    records[*count].id = id;
+
+    printf("Enter student name: ");
+    fgets(records[*count].name, NAME_LENGTH, stdin);
+    records[*count].name[strcspn(records[*count].name, "\n")] = '\0';
+
+    if (strlen(records[*count].name) == 0)
+    {
+        printf("Name cannot be empty.\n");
+        return;
+    }
+
+    if (!readFloat("Enter progress (0 - 100): ", &progress))
+    {
+        printf("Invalid progress input.\n");
+        return;
+    }
+
+    if (progress < 0 || progress > 100)
+    {
+        printf("Progress must be between 0 and 100.\n");
+        return;
+    }
+
+    status = chooseStatus();
+
+    if (status == 0)
+    {
+        return;
+    }
+
+    records[*count].progress = progress;
+    records[*count].status = status;
+
+    (*count)++;
+
+    printf("Record added successfully.\n");
+}
+
+void displayRecords(StudentRecord records[], int count)
+{
+    int i;
+
+    if (count == 0)
+    {
+        printf("\nNo records stored yet.\n");
+        return;
+    }
+
+    printf("\n===== STORED RECORDS =====\n");
+
+    for (i = 0; i < count; i++)
+    {
+        printf("\nRecord %d\n", i + 1);
+        printf("ID: %d\n", records[i].id);
+        printf("Name: %s\n", records[i].name);
+        printf("Progress: %.2f%%\n", records[i].progress);
+        printf("Status: %s\n", getStatusText(records[i].status));
+    }
+}
+
+void showReport(StudentRecord records[], int count)
+{
+    int i;
+    int completedCount = 0;
+    float totalProgress = 0;
+    float averageProgress;
+    float highestProgress;
+    float lowestProgress;
+
+    if (count == 0)
+    {
+        printf("\n===== ANALYTIC REPORT =====\n");
+        printf("No records available.\n");
+        return;
+    }
+
+    highestProgress = records[0].progress;
+    lowestProgress = records[0].progress;
+
+    for (i = 0; i < count; i++)
+    {
+        totalProgress += records[i].progress;
+
+        if (records[i].status == COMPLETED)
+        {
+            completedCount++;
+        }
+
+        if (records[i].progress > highestProgress)
+        {
+            highestProgress = records[i].progress;
+        }
+        else if (records[i].progress < lowestProgress)
+        {
+            lowestProgress = records[i].progress;
+        }
+    }
+
+    averageProgress = totalProgress / count;
+
+    printf("\n===== ANALYTIC REPORT =====\n");
+    printf("Total records: %d\n", count);
+    printf("Completed records: %d\n", completedCount);
+    printf("Average progress: %.2f%%\n", averageProgress);
+    printf("Highest progress: %.2f%%\n", highestProgress);
+    printf("Lowest progress: %.2f%%\n", lowestProgress);
+
+    if (averageProgress >= 80)
+    {
+        printf("Class performance: Very good overall progress.\n");
+    }
+    else if (averageProgress >= 50)
+    {
+        printf("Class performance: Acceptable progress, but there is room for improvement.\n");
+    }
+    else
+    {
+        printf("Class performance: Low progress, more support is needed.\n");
+    }
+
+    if (completedCount == count)
+    {
+        printf("Completion status: All students are completed.\n");
+    }
+    else if (completedCount > 0)
+    {
+        printf("Completion status: Some students are completed.\n");
+    }
+    else
+    {
+        printf("Completion status: No completed students yet.\n");
+    }
+}
+
+void showMenu()
+{
+    printf("\n===== STUDENT PROGRESS TRACKER =====\n");
+    printf("1. Add record\n");
+    printf("2. Display all records\n");
+    printf("3. Show analytic report\n");
+    printf("4. Exit\n");
+    printf("Choose an option: ");
+}
+
+int main()
+{
+    StudentRecord records[MAX_RECORDS];
+    int count = 0;
+    int choice;
+
+    do
+    {
+        if (!readInt("\n===== STUDENT PROGRESS TRACKER =====\n1. Add record\n2. Display all records\n3. Show analytic report\n4. Exit\nChoose an option: ", &choice))
+        {
+            printf("Invalid menu input. Please enter a number.\n");
+            continue;
+        }
+
+        switch (choice)
+        {
+            case 1:
+                addRecord(records, &count);
+                break;
+            case 2:
+                displayRecords(records, count);
+                break;
+            case 3:
+                showReport(records, count);
+                break;
+            case 4:
+                printf("Program closed.\n");
+                break;
+            default:
+                printf("Invalid menu choice. Try again.\n");
+                break;
+        }
+    }
+    while (choice != 4);
+
+    return 0;
+} = 2,
     COMPLETED = 3
 } Status;
 
