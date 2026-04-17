@@ -259,7 +259,7 @@ void printReport(const struct Student students[], int count)
 
     averageProgress = totalProgress / count;
 
-    printf("\n--- Raport Analitik ---\n");
+    printf("\n- Raport Analitik -\n");
     printf("Numri total i regjistrimeve: %d\n", count);
     printf("Te perfunduara: %d\n", completedCount);
     printf("Ne progres: %d\n", inProgressCount);
