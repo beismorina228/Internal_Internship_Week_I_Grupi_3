@@ -1351,3 +1351,368 @@ void clearInputBuffer(void) {
     int c;
     while ((c = getchar()) != '\n' && c != EOF);
 }
+//tesk5
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_STUDENTS 5
+#define NAME_LENGTH 50
+#define INPUT_SIZE 128
+
+typedef enum {
+    TODO = 1,
+    IN_PROGRESS = 2,
+    DONE = 3
+} StudentStatus;
+
+typedef struct {
+    int id;
+    char name[NAME_LENGTH];
+    int progress;
+    StudentStatus status;
+} Student;
+
+/* FUNCTIONS */
+int readInt(const char *prompt);
+void readString(const char *prompt, char *buffer, int size);
+
+StudentStatus readStatus(void);
+const char *statusToString(StudentStatus status);
+
+int findStudentIndexById(const Student students[], int count, int id);
+
+void updateProgress(int *progress, StudentStatus *status, int newProgress);
+
+void addStudent(Student students[], int *count);
+void displayStudents(const Student students[], int count);
+void updateStudentProgress(Student students[], int count);
+
+void generateReport(const Student students[], int count);
+
+void searchStudent(const Student students[], int count);
+void evaluateStudent(const Student *s);
+
+/* 🔥 POINTER-BASED FEATURE (KËRKESA 5) */
+void modifyProgressByPointer(Student students[], int count);
+
+void clearInputBuffer(void);
+
+/* MAIN */
+int main(void) {
+    Student students[MAX_STUDENTS];
+    int studentCount = 0;
+    int choice;
+
+    do {
+        printf("\n=== STUDENT TRACKER ===\n");
+        printf("1. Add student\n");
+        printf("2. Show students\n");
+        printf("3. Update progress\n");
+        printf("4. Report\n");
+        printf("5. Search student\n");
+        printf("6. Modify progress (POINTER)\n");
+        printf("7. Exit\n");
+
+        choice = readInt("Choose: ");
+
+        switch (choice) {
+            case 1: addStudent(students, &studentCount); break;
+            case 2: displayStudents(students, studentCount); break;
+            case 3: updateStudentProgress(students, studentCount); break;
+            case 4: generateReport(students, studentCount); break;
+            case 5: searchStudent(students, studentCount); break;
+            case 6: modifyProgressByPointer(students, studentCount); break;
+            case 7: printf("Goodbye!\n"); break;
+            default: printf("Invalid option!\n");
+        }
+
+    } while (choice != 7);
+
+    return 0;
+}
+
+/* ================= INPUT ================= */
+
+int readInt(const char *prompt) {
+    char input[INPUT_SIZE];
+    char *end;
+    long val;
+
+    while (1) {
+        printf("%s", prompt);
+
+        if (!fgets(input, sizeof(input), stdin)) continue;
+
+        val = strtol(input, &end, 10);
+
+        if (end == input) {
+            printf("Invalid number!\n");
+            continue;
+        }
+
+        return (int)val;
+    }
+}
+
+void readString(const char *prompt, char *buffer, int size) {
+    while (1) {
+        printf("%s", prompt);
+
+        if (!fgets(buffer, size, stdin)) continue;
+
+        buffer[strcspn(buffer, "\n")] = '\0';
+
+        if (strlen(buffer) == 0) {
+            printf("Empty not allowed!\n");
+        } else {
+            return;
+        }
+    }
+}
+
+/* ================= STATUS ================= */
+
+StudentStatus readStatus(void) {
+    int c;
+
+    while (1) {
+        printf("1-TODO\n2-IN_PROGRESS\n3-DONE\n");
+        c = readInt("Status: ");
+
+        if (c >= 1 && c <= 3)
+            return (StudentStatus)c;
+
+        printf("Invalid status!\n");
+    }
+}
+
+const char *statusToString(StudentStatus s) {
+    switch (s) {
+        case TODO: return "TODO";
+        case IN_PROGRESS: return "IN_PROGRESS";
+        case DONE: return "DONE";
+        default: return "UNKNOWN";
+    }
+}
+
+/* ================= FIND ================= */
+
+int findStudentIndexById(const Student students[], int count, int id) {
+    for (int i = 0; i < count; i++) {
+        if (students[i].id == id)
+            return i;
+    }
+    return -1;
+}
+
+/* ================= POINTER CORE ================= */
+
+void updateProgress(int *progress, StudentStatus *status, int newProgress) {
+    *progress = newProgress;
+
+    if (newProgress == 0)
+        *status = TODO;
+    else if (newProgress < 100)
+        *status = IN_PROGRESS;
+    else
+        *status = DONE;
+}
+
+/* ================= ADD ================= */
+
+void addStudent(Student students[], int *count) {
+    if (*count >= MAX_STUDENTS) {
+        printf("Max capacity reached!\n");
+        return;
+    }
+
+    Student s;
+
+    s.id = readInt("ID: ");
+    if (s.id <= 0) {
+        printf("Invalid ID!\n");
+        return;
+    }
+
+    if (findStudentIndexById(students, *count, s.id) != -1) {
+        printf("ID already exists!\n");
+        return;
+    }
+
+    readString("Name: ", s.name, NAME_LENGTH);
+
+    s.progress = readInt("Progress (0-100): ");
+    if (s.progress < 0 || s.progress > 100) {
+        printf("Invalid progress!\n");
+        return;
+    }
+
+    s.status = readStatus();
+
+    students[*count] = s;
+    (*count)++;
+
+    printf("Student added!\n");
+}
+
+/* ================= DISPLAY ================= */
+
+void displayStudents(const Student students[], int count) {
+    if (count == 0) {
+        printf("No students!\n");
+        return;
+    }
+
+    for (int i = 0; i < count; i++) {
+        printf("\nID: %d | Name: %s | Progress: %d%% | Status: %s\n",
+               students[i].id,
+               students[i].name,
+               students[i].progress,
+               statusToString(students[i].status));
+    }
+}
+
+/* ================= UPDATE ================= */
+
+void updateStudentProgress(Student students[], int count) {
+    if (count == 0) {
+        printf("No data!\n");
+        return;
+    }
+
+    int id = readInt("ID: ");
+    int index = findStudentIndexById(students, count, id);
+
+    if (index == -1) {
+        printf("Not found!\n");
+        return;
+    }
+
+    int p = readInt("New progress: ");
+    if (p < 0 || p > 100) {
+        printf("Invalid!\n");
+        return;
+    }
+
+    updateProgress(&students[index].progress,
+                   &students[index].status,
+                   p);
+
+    printf("Updated!\n");
+}
+
+/* ================= REPORT ================= */
+
+void generateReport(const Student students[], int count) {
+    if (count == 0) {
+        printf("No report data!\n");
+        return;
+    }
+
+    int done = 0, sum = 0;
+    int max = students[0].progress;
+    int min = students[0].progress;
+
+    for (int i = 0; i < count; i++) {
+        sum += students[i].progress;
+
+        if (students[i].status == DONE)
+            done++;
+
+        if (students[i].progress > max)
+            max = students[i].progress;
+
+        if (students[i].progress < min)
+            min = students[i].progress;
+    }
+
+    printf("\n=== REPORT ===\n");
+    printf("Total: %d\nDone: %d\nMax: %d\nMin: %d\n",
+           count, done, max, min);
+}
+
+/* ================= SEARCH ================= */
+
+void searchStudent(const Student students[], int count) {
+    if (count == 0) {
+        printf("No students!\n");
+        return;
+    }
+
+    int id = readInt("Enter ID: ");
+
+    for (int i = 0; i < count; i++) {
+        if (students[i].id == id) {
+            printf("\nFOUND: %s | %d%% | %s\n",
+                   students[i].name,
+                   students[i].progress,
+                   statusToString(students[i].status));
+
+            evaluateStudent(&students[i]);
+            return;
+        }
+    }
+
+    printf("Not found!\n");
+}
+
+/* ================= POINTER FEATURE (KËRKESA 5) ================= */
+
+void modifyProgressByPointer(Student students[], int count) {
+    if (count == 0) {
+        printf("No students!\n");
+        return;
+    }
+
+    int id = readInt("Enter ID: ");
+    int index = findStudentIndexById(students, count, id);
+
+    if (index == -1) {
+        printf("Student not found!\n");
+        return;
+    }
+
+    printf("Before: %d%%\n", students[index].progress);
+
+    int increase = readInt("Increase progress by: ");
+
+    // 🔥 POINTER USAGE REAL
+    int *ptr = &students[index].progress;
+    *ptr = *ptr + increase;
+
+    if (*ptr > 100) *ptr = 100;
+    if (*ptr < 0) *ptr = 0;
+
+    if (*ptr == 0)
+        students[index].status = TODO;
+    else if (*ptr < 100)
+        students[index].status = IN_PROGRESS;
+    else
+        students[index].status = DONE;
+
+    printf("After: %d%%\n", *ptr);
+}
+
+/* ================= EVALUATION ================= */
+
+void evaluateStudent(const Student *s) {
+    printf("\n--- ANALYSIS ---\n");
+
+    if (s->progress == 0)
+        printf("Not started.\n");
+    else if (s->progress < 50)
+        printf("Low progress warning.\n");
+    else if (s->progress < 100)
+        printf("Good progress.\n");
+    else
+        printf("Completed!\n");
+}
+
+/* ================= CLEAN ================= */
+
+void clearInputBuffer(void) {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
