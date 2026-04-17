@@ -1,0 +1,146 @@
+#include <stdio.h>
+
+#define MAX 5
+
+enum Status {
+    FAIL = 1,
+    PASS,
+    EXCELLENT
+};
+
+struct Student {
+    int id;
+    char name[50];
+    float score;
+    enum Status status;
+};
+
+void printStatus(enum Status s) {
+    switch(s) {
+        case FAIL: printf("FAIL"); break;
+        case PASS: printf("PASS"); break;
+        case EXCELLENT: printf("EXCELLENT"); break;
+    }
+}
+
+int main() {
+    struct Student students[MAX];
+    int count = 0;
+    int choice;
+
+    do {
+        printf("\n========== MENU ==========\n");
+        printf("1. Add Student\n");
+        printf("2. Show Students\n");
+        printf("3. Show Report\n");
+        printf("4. Exit\n");
+        printf("==========================\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+
+            case 1:
+                if (count >= MAX) {
+                    printf("[ERROR] List is full!\n");
+                    break;
+                }
+
+                printf("\n--- Add Student ---\n");
+
+                printf("Enter ID: ");
+                scanf("%d", &students[count].id);
+
+                printf("Enter Name: ");
+                scanf("%s", students[count].name);
+
+                printf("Enter Score: ");
+                scanf("%f", &students[count].score);
+
+                int st;
+                printf("Select Status:\n");
+                printf("1. FAIL\n2. PASS\n3. EXCELLENT\n");
+                printf("Choice: ");
+                scanf("%d", &st);
+
+                if (st >= 1 && st <= 3) {
+                    students[count].status = st;
+                    count++;
+                    printf("[SUCCESS] Student added!\n");
+                } else {
+                    printf("[ERROR] Invalid status!\n");
+                }
+                break;
+
+            case 2:
+                if (count == 0) {
+                    printf("[INFO] No students found!\n");
+                } else {
+                    printf("\n======= STUDENT LIST =======\n");
+
+                    for (int i = 0; i < count; i++) {
+                        printf("ID: %-3d | Name: %-10s | Score: %.2f | Status: ",
+                               students[i].id,
+                               students[i].name,
+                               students[i].score);
+                        printStatus(students[i].status);
+                        printf("\n");
+                    }
+
+                    printf("============================\n");
+                }
+                break;
+
+            case 3:
+                if (count == 0) {
+                    printf("[INFO] No data for report!\n");
+                    break;
+                }
+
+                float sum = 0;
+                float max = students[0].score;
+                float min = students[0].score;
+
+                for (int i = 0; i < count; i++) {
+                    sum += students[i].score;
+
+                    if (students[i].score > max)
+                        max = students[i].score;
+
+                    if (students[i].score < min)
+                        min = students[i].score;
+                }
+
+                float avg = sum / count;
+
+                printf("\n======= REPORT =======\n");
+                printf("Total students: %d\n", count);
+                printf("Average score: %.2f\n", avg);
+                printf("Highest score: %.2f\n", max);
+                printf("Lowest score: %.2f\n", min);
+
+                // Classification
+                if (avg >= 80)
+                    printf("Overall performance: EXCELLENT\n");
+                else if (avg >= 50)
+                    printf("Overall performance: PASS\n");
+                else
+                    printf("Overall performance: NEEDS IMPROVEMENT\n");
+
+                printf("=======================\n");
+
+                break;
+
+            case 4:
+                printf("Exiting program...\n");
+                break;
+
+            default:
+                printf("[ERROR] Invalid choice!\n");
+        }
+
+    } while(choice != 4);
+
+    return 0;
+}
