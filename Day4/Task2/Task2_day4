@@ -1,0 +1,116 @@
+#include <stdio.h>
+
+#define MAX 5
+
+// Enum për status
+enum Status {
+    FAIL = 1,
+    PASS,
+    EXCELLENT
+};
+
+// Struct
+struct Student {
+    int id;
+    char name[50];
+    float score;
+    enum Status status;
+};
+
+// Funksion për print status
+void printStatus(enum Status s) {
+    switch(s) {
+        case FAIL: printf("FAIL"); break;
+        case PASS: printf("PASS"); break;
+        case EXCELLENT: printf("EXCELLENT"); break;
+    }
+}
+
+int main() {
+    struct Student students[MAX];
+    int count = 0;
+    int choice;
+
+    do {
+        printf("\n========== MENU ==========\n");
+        printf("1. Add Student\n");
+        printf("2. Show Students\n");
+        printf("3. Exit\n");
+        printf("==========================\n");
+
+        printf("Enter your choice: ");
+        scanf("%d", &choice);
+
+        switch(choice) {
+
+            case 1:
+                if (count >= MAX) {
+                    printf("[ERROR] List is full!\n");
+                    break;
+                }
+
+                printf("\n--- Add Student ---\n");
+
+                printf("Enter ID: ");
+                scanf("%d", &students[count].id);
+
+                printf("Enter Name: ");
+                scanf("%s", students[count].name);
+
+                printf("Enter Score: ");
+                scanf("%f", &students[count].score);
+
+                // Zgjedh statusin
+                int st;
+                printf("Select Status:\n");
+                printf("1. FAIL\n2. PASS\n3. EXCELLENT\n");
+                printf("Choice: ");
+                scanf("%d", &st);
+
+                // VALIDIM STATUS
+                switch(st) {
+                    case 1:
+                    case 2:
+                    case 3:
+                        students[count].status = st;
+                        printf("[SUCCESS] Student added!\n");
+                        count++;
+                        break;
+
+                    default:
+                        printf("[ERROR] Invalid status! Student not added.\n");
+                }
+
+                break;
+
+            case 2:
+                if (count == 0) {
+                    printf("[INFO] No students found!\n");
+                } else {
+                    printf("\n======= STUDENT LIST =======\n");
+
+                    for (int i = 0; i < count; i++) {
+                        printf("ID: %-3d | Name: %-10s | Score: %.2f | Status: ",
+                               students[i].id,
+                               students[i].name,
+                               students[i].score);
+                        printStatus(students[i].status);
+                        printf("\n");
+                    }
+
+                    printf("============================\n");
+                }
+                break;
+
+            case 3:
+                printf("Exiting program...\n");
+                break;
+
+            default:
+                printf("[ERROR] Invalid menu choice!\n");
+        }
+
+    } while(choice != 3);
+
+    return 0;
+}
