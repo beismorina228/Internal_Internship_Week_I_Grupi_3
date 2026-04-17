@@ -48,7 +48,7 @@ int main()
 
     do
     {
-        printf("\n--- Student Progress Tracker ---\n");
+        printf("\n-Student Progress Tracker -\n");
         printf("1. Add Student\n");
         printf("2. Show Students\n");
         printf("3. Exit\n");
