@@ -137,7 +137,7 @@ void rankStudents(struct Student s[], int n) {
         return;
     }
 
-    printf("\n===== RANKING FINAL =====\n");
+    printf("\n- RANKING FINAL -\n");
 
     for (int i = 0; i < n; i++) {
         int rank = 1;
