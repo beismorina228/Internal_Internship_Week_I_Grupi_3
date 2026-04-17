@@ -1,9 +1,13 @@
 #include <stdio.h>
-#include <string.h>
 
 #define MAX 5
 
 enum Status { FAIL, PASS };
+
+void updateProgress(int *p) {
+    printf("Enter new progress: ");
+    scanf("%d", p);
+}
 
 int main() {
     int ids[MAX];
@@ -15,16 +19,11 @@ int main() {
     int choice;
     int statusChoice;
 
-    int searchOption;
-    int searchId;
-    char searchName[50];
-    int found;
-
     do {
         printf("\n1. Add Student\n");
         printf("2. Show Students\n");
         printf("3. Show Report\n");
-        printf("4. Search Student\n");
+        printf("4. Update Progress\n");
         printf("5. Exit\n");
         printf("Choice: ");
         scanf("%d", &choice);
@@ -132,86 +131,33 @@ int main() {
 
             case 4:
                 if (count == 0) {
-                    printf("No data to search.\n");
+                    printf("No students available.\n");
                 } else {
-                    printf("\nSearch by:\n");
-                    printf("1. ID\n");
-                    printf("2. Name\n");
-                    printf("Choice: ");
-                    scanf("%d", &searchOption);
+                    int id;
+                    int found = 0;
 
-                    found = 0;
+                    printf("Enter ID to update: ");
+                    scanf("%d", &id);
 
-                    switch (searchOption) {
-                        case 1:
-                            printf("Enter ID: ");
-                            scanf("%d", &searchId);
+                    for (int i = 0; i < count; i++) {
+                        if (ids[i] == id) {
+                            printf("Student found: %s\n", names[i]);
+                            printf("Current progress: %d\n", progress[i]);
 
-                            for (int i = 0; i < count; i++) {
-                                if (ids[i] == searchId) {
-                                    printf("\nFound Student\n");
-                                    printf("ID: %d\n", ids[i]);
-                                    printf("Name: %s\n", names[i]);
-                                    printf("Progress: %d\n", progress[i]);
+                            updateProgress(&progress[i]);
 
-                                    if (statuses[i] == PASS)
-                                        printf("Status: PASS\n");
-                                    else
-                                        printf("Status: FAIL\n");
+                            if (progress[i] >= 50)
+                                statuses[i] = PASS;
+                            else
+                                statuses[i] = FAIL;
 
-                                    if (progress[i] < 50 && statuses[i] == FAIL)
-                                        printf("Warning: Low performance and failed status.\n");
-                                    else if (progress[i] >= 50 && progress[i] < 80)
-                                        printf("Recommendation: Keep improving.\n");
-                                    else if (progress[i] >= 80 && statuses[i] == PASS)
-                                        printf("Excellent: Strong performance.\n");
-                                    else
-                                        printf("Status noted.\n");
-
-                                    found = 1;
-                                }
-                            }
-
-                            if (found == 0)
-                                printf("No matching student found.\n");
-                            break;
-
-                        case 2:
-                            printf("Enter Name: ");
-                            scanf("%s", searchName);
-
-                            for (int i = 0; i < count; i++) {
-                                if (strcmp(names[i], searchName) == 0) {
-                                    printf("\nFound Student\n");
-                                    printf("ID: %d\n", ids[i]);
-                                    printf("Name: %s\n", names[i]);
-                                    printf("Progress: %d\n", progress[i]);
-
-                                    if (statuses[i] == PASS)
-                                        printf("Status: PASS\n");
-                                    else
-                                        printf("Status: FAIL\n");
-
-                                    if (progress[i] < 50 && statuses[i] == FAIL)
-                                        printf("Warning: Low performance and failed status.\n");
-                                    else if (progress[i] >= 50 && progress[i] < 80)
-                                        printf("Recommendation: Keep improving.\n");
-                                    else if (progress[i] >= 80 && statuses[i] == PASS)
-                                        printf("Excellent: Strong performance.\n");
-                                    else
-                                        printf("Status noted.\n");
-
-                                    found = 1;
-                                }
-                            }
-
-                            if (found == 0)
-                                printf("No matching student found.\n");
-                            break;
-
-                        default:
-                            printf("Invalid search option.\n");
+                            printf("Progress updated successfully.\n");
+                            found = 1;
+                        }
                     }
+
+                    if (!found)
+                        printf("Student not found.\n");
                 }
                 break;
 
