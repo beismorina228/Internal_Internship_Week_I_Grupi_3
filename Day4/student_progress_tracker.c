@@ -1,225 +1,191 @@
 /*
  * Console-based Student Progress Tracker
- * Internal Internship - Java 1 - Dita 4 - Kerkesa 2
- *
- * Zgjerime nga Kerkesa 1:
- * - Perdoruesi zgjedh statusin manualisht (jo me automatik nga score)
- * - Switch i dyte per zgjedhjen e statusit
- * - Validim me i forte i te gjitha input-eve
- * - Enum perdoret realisht ne menaxhimin e rrjedhes se programit
+ * Internal Internship - Java 1 - Dita 4
  */
 
 #include <stdio.h>
 #include <string.h>
 
-/* ------------------------------------------------------------------ */
-/* Konstantet dhe tipet                                                 */
-/* ------------------------------------------------------------------ */
+#define MAX_STUDENTS 5
+#define NAME_LEN 50
 
-#define MAX_STUDENTS 5       /* Kapaciteti maksimal i programit */
-#define NAME_LEN     50      /* Gjatesia maksimale e emrit      */
-
-/* Enum per statusin e nxenesit - perdoret realisht ne logjike */
+/* ---------------- ENUM ---------------- */
 typedef enum {
     STATUS_ACTIVE = 0,
     STATUS_PASSED = 1,
     STATUS_FAILED = 2
 } StudentStatus;
 
-/* Struktura e nje regjistrimi */
+/* ---------------- STRUCT ---------------- */
 typedef struct {
-    int           id;
-    char          name[NAME_LEN];
-    int           score;        /* 0 - 100 */
+    int id;
+    char name[NAME_LEN];
+    int score;
     StudentStatus status;
 } Student;
 
-/* ------------------------------------------------------------------ */
-/* Funksionet ndihmese per enum dhe shfaqje                             */
-/* ------------------------------------------------------------------ */
-
-/* Kthen emrin e statusit si string - switch i brendshem */
+/* ---------------- STATUS HELPERS ---------------- */
 const char* statusToString(StudentStatus s) {
     switch (s) {
         case STATUS_ACTIVE: return "Active";
         case STATUS_PASSED: return "Passed";
         case STATUS_FAILED: return "Failed";
-        default:            return "Unknown";
+        default: return "Unknown";
     }
 }
 
-/*
- * Kerkon perdoruesin te zgjedhe statusin manualisht.
- * Perdor switch te dyte per degezim te qarte.
- * Kthen 1 nese zgjedhja eshte e vlefshme, 0 nese jo.
- */
+/* ---------------- STATUS INPUT ---------------- */
 int chooseStatus(StudentStatus *outStatus) {
     int choice;
 
     printf("  Zgjidhni statusin:\n");
-    printf("    1. Active  (nxenesi eshte ne progres)\n");
-    printf("    2. Passed  (nxenesi ka kaluar)\n");
-    printf("    3. Failed  (nxenesi ka deshtuar)\n");
-    printf("  Zgjedhja juaj: ");
+    printf("    1. Active\n");
+    printf("    2. Passed\n");
+    printf("    3. Failed\n");
+    printf("  Zgjedhja: ");
 
     if (scanf("%d", &choice) != 1) {
-        /* Input jo-numerike - pastro bufferin */
         while (getchar() != '\n');
-        printf("  [!] Input i pavlefshme. Duhet te shkruani 1, 2 ose 3.\n");
+        printf("  [!] Input i pavlefshem.\n");
         return 0;
     }
 
-    /* Switch i dyte - per zgjedhjen e statusit */
     switch (choice) {
-        case 1:
-            *outStatus = STATUS_ACTIVE;
-            return 1;
-        case 2:
-            *outStatus = STATUS_PASSED;
-            return 1;
-        case 3:
-            *outStatus = STATUS_FAILED;
-            return 1;
+        case 1: *outStatus = STATUS_ACTIVE; return 1;
+        case 2: *outStatus = STATUS_PASSED; return 1;
+        case 3: *outStatus = STATUS_FAILED; return 1;
         default:
-            printf("  [!] Zgjedhje e pavlefshme per statusin. Duhet te jete 1, 2 ose 3.\n");
+            printf("  [!] Zgjedhje e pavlefshme.\n");
             return 0;
     }
 }
 
-/* ------------------------------------------------------------------ */
-/* Funksionet per regjistrimet                                          */
-/* ------------------------------------------------------------------ */
-
-/*
- * Funksion me pointer - ploteson te dhenat e nje regjistrimi.
- * Perdor pointer per te modifikuar direkt regjistrimin ne array.
- * Tani merr statusin si parameter (zgjedhur manualisht nga perdoruesi).
- */
-void fillStudent(Student *student, int id, const char *name,
-                 int score, StudentStatus status) {
-    student->id     = id;
-    strncpy(student->name, name, NAME_LEN - 1);
-    student->name[NAME_LEN - 1] = '\0';
-    student->score  = score;
-    student->status = status;
+/* ---------------- CORE FUNCTIONS ---------------- */
+void fillStudent(Student *s, int id, const char *name, int score, StudentStatus status) {
+    s->id = id;
+    strncpy(s->name, name, NAME_LEN - 1);
+    s->name[NAME_LEN - 1] = '\0';
+    s->score = score;
+    s->status = status;
 }
 
-/* Shfaq nje regjistrim te vetme ne format te lexueshme */
-void printStudent(const Student *student) {
-    printf("  ID: %d | Emri: %-20s | Rezultati: %3d | Statusi: %s\n",
-           student->id,
-           student->name,
-           student->score,
-           statusToString(student->status));
+void printStudent(const Student *s) {
+    printf("  ID: %d | Emri: %-15s | Score: %3d | Status: %s\n",
+           s->id, s->name, s->score, statusToString(s->status));
 }
 
-/* Shfaq te gjithe regjistrimet e ruajtura */
 void printAllStudents(const Student students[], int count) {
     if (count == 0) {
-        printf("\n  [!] Nuk ka asnje regjistrim te ruajtur ende.\n");
+        printf("\n  [!] Nuk ka regjistrime.\n");
         return;
     }
 
-    printf("\n  ============================================================\n");
-    printf("  Lista e te gjithe nxenesve te regjistruar (%d/%d):\n",
-           count, MAX_STUDENTS);
-    printf("  ============================================================\n");
-
-    /* Loop per shfaqjen e te gjithe regjistrimeve */
+    printf("\n  ===== STUDENT LIST =====\n");
     for (int i = 0; i < count; i++) {
         printStudent(&students[i]);
     }
-
-    printf("  ============================================================\n");
 }
 
-/* Shton nje regjistrim te ri - kthen 1 nese sukses, 0 nese deshtim */
+/* ---------------- TASK 3 REPORT ---------------- */
+void printReport(const Student students[], int count) {
+    printf("\n  ===== ANALYTICAL REPORT =====\n");
+
+    if (count == 0) {
+        printf("  No data available.\n");
+        return;
+    }
+
+    int sum = 0;
+    int max = students[0].score;
+    int min = students[0].score;
+
+    int passed = 0, failed = 0, active = 0;
+
+    for (int i = 0; i < count; i++) {
+        int score = students[i].score;
+
+        sum += score;
+
+        if (score > max) max = score;
+        if (score < min) min = score;
+
+        if (students[i].status == STATUS_PASSED) passed++;
+        else if (students[i].status == STATUS_FAILED) failed++;
+        else active++;
+    }
+
+    float avg = (float)sum / count;
+
+    printf("  Total students : %d\n", count);
+    printf("  Passed         : %d\n", passed);
+    printf("  Failed         : %d\n", failed);
+    printf("  Active         : %d\n", active);
+    printf("  Average score  : %.2f\n", avg);
+    printf("  Max score      : %d\n", max);
+    printf("  Min score      : %d\n", min);
+
+    printf("  Performance    : ");
+
+    if (avg >= 85) printf("Excellent\n");
+    else if (avg >= 70) printf("Good\n");
+    else if (avg >= 50) printf("Average\n");
+    else printf("Poor\n");
+}
+
+/* ---------------- ADD STUDENT ---------------- */
 int addStudent(Student students[], int *count) {
-    /* Kontrollo nese ka arritur kufirin maksimal */
     if (*count >= MAX_STUDENTS) {
-        printf("\n  [!] Kapaciteti maksimal i arritur (%d/%d)."
-               " Nuk mund te shtohen me nxenes.\n",
-               *count, MAX_STUDENTS);
+        printf("\n  [!] Kapaciteti u mbush.\n");
         return 0;
     }
 
-    char          name[NAME_LEN];
-    int           score;
+    char name[NAME_LEN];
+    int score;
     StudentStatus status;
 
-    printf("\n  --- Regjistrim i ri ---\n");
+    printf("\n  Emri: ");
+    if (scanf(" %49[^\n]", name) != 1) return 0;
 
-    /* Lexo emrin */
-    printf("  Emri i nxenesit: ");
-    if (scanf(" %49[^\n]", name) != 1) {
-        printf("  [!] Input i pavlefshme per emrin.\n");
-        return 0;
-    }
-
-    /* Lexo dhe valido rezultatin */
-    printf("  Rezultati (0-100): ");
+    printf("  Score (0-100): ");
     if (scanf("%d", &score) != 1 || score < 0 || score > 100) {
-        printf("  [!] Rezultati duhet te jete nje numer ndermjet 0 dhe 100.\n");
-        while (getchar() != '\n');
+        printf("  [!] Score i pavlefshem.\n");
         return 0;
     }
 
-    /* Perdoruesi zgjedh statusin manualisht - me switch te brendshem */
-    if (chooseStatus(&status) == 0) {
-        /* Zgjedhja e statusit deshtoi - mos shto regjistrimin */
-        return 0;
-    }
+    if (!chooseStatus(&status)) return 0;
 
-    /* Ploteso regjistrimin duke perdorur funksionin me pointer */
     fillStudent(&students[*count], *count + 1, name, score, status);
-
     (*count)++;
 
-    printf("  [OK] Nxenesi '%s' u shtua me sukses (ID: %d, Statusi: %s).\n",
-           name, *count, statusToString(students[*count - 1].status));
-
+    printf("  [OK] Shtuar me sukses!\n");
     return 1;
 }
 
-/* ------------------------------------------------------------------ */
-/* Menuja kryesore                                                       */
-/* ------------------------------------------------------------------ */
-
+/* ---------------- MENU ---------------- */
 void printMenu(int count) {
-    printf("\n  ============================================================\n");
-    printf("  STUDENT PROGRESS TRACKER  |  Regjistrime: %d/%d\n",
-           count, MAX_STUDENTS);
-    printf("  ============================================================\n");
-    printf("  1. Shto regjistrim te ri\n");
-    printf("  2. Shfaq te gjithe regjistrimet\n");
-    printf("  3. Dil nga programi\n");
-    printf("  ============================================================\n");
-    printf("  Zgjidhni opsionin: ");
+    printf("\n  ===== MENU (%d/%d) =====\n", count, MAX_STUDENTS);
+    printf("  1. Add student\n");
+    printf("  2. Show students\n");
+    printf("  3. Show report\n");
+    printf("  4. Exit\n");
+    printf("  Zgjedhja: ");
 }
 
-/* ------------------------------------------------------------------ */
-/* Main                                                                  */
-/* ------------------------------------------------------------------ */
+/* ---------------- MAIN ---------------- */
+int main() {
+    Student students[MAX_STUDENTS];
+    int count = 0;
+    int choice;
 
-int main(void) {
-    Student students[MAX_STUDENTS];   /* Array me madhesi fikse */
-    int     count = 0;                /* Numri aktual i regjistrimeve */
-    int     choice;
-
-    printf("\n  Miresevini ne Student Progress Tracker!\n");
-
-    /* Loop kryesor i programit */
     while (1) {
         printMenu(count);
 
         if (scanf("%d", &choice) != 1) {
-            /* Input jo-numerike - pastro bufferin dhe vazhdo */
             while (getchar() != '\n');
-            printf("  [!] Ju lutem shkruani nje numer (1, 2 ose 3).\n");
+            printf("  [!] Input i pavlefshem.\n");
             continue;
         }
 
-        /* Switch kryesor per menaxhimin e zgjedhjes se perdoruesit */
         switch (choice) {
             case 1:
                 addStudent(students, &count);
@@ -230,14 +196,15 @@ int main(void) {
                 break;
 
             case 3:
-                printf("\n  Mirupafshim! Programi u mbyll.\n\n");
+                printReport(students, count);
+                break;
+
+            case 4:
+                printf("  Exit...\n");
                 return 0;
 
             default:
-                printf("  [!] Opsion i pavlefshme. Zgjidhni 1, 2 ose 3.\n");
-                break;
+                printf("  [!] Zgjedhje e pavlefshme.\n");
         }
     }
-
-    return 0;
 }
