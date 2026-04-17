@@ -1,0 +1,180 @@
+#include <stdio.h>
+#include <string.h>
+
+#define MAX 5
+
+typedef enum {
+    FILLESTAR = 1,
+    MESATAR = 2,
+    AVANCUAR = 3
+} Statusi;
+
+struct Progresi {
+    int id;
+    char emri[50];
+    double pike;
+    Statusi statusi;
+};
+
+const char* statusNeText(Statusi s) {
+    switch (s) {
+        case FILLESTAR:
+            return "Fillestar";
+        case MESATAR:
+            return "Mesatar";
+        case AVANCUAR:
+            return "Avancuar";
+        default:
+            return "Status i panjohur";
+    }
+}
+
+void shtoRegjistrim(struct Progresi regjistrimet[], int *numriAktual) {
+    if (*numriAktual >= MAX) {
+        printf("Nuk mund te shtoni me regjistrime. Eshte arritur maksimumi.\n");
+        return;
+    }
+
+    int pozicioni = *numriAktual;
+    int statusInput;
+
+    printf("Shkruaj ID: ");
+    scanf("%d", &regjistrimet[pozicioni].id);
+
+    printf("Shkruaj emrin: ");
+    scanf(" %[^\n]", regjistrimet[pozicioni].emri);
+
+    printf("Shkruaj piket: ");
+    scanf("%lf", &regjistrimet[pozicioni].pike);
+
+    printf("Zgjidh statusin:\n");
+    printf("1. Fillestar\n");
+    printf("2. Mesatar\n");
+    printf("3. Avancuar\n");
+    printf("Zgjedhja: ");
+    scanf("%d", &statusInput);
+
+    switch (statusInput) {
+        case 1:
+            regjistrimet[pozicioni].statusi = FILLESTAR;
+            break;
+        case 2:
+            regjistrimet[pozicioni].statusi = MESATAR;
+            break;
+        case 3:
+            regjistrimet[pozicioni].statusi = AVANCUAR;
+            break;
+        default:
+            printf("Status i pavlefshem. Regjistrimi nuk u ruajt.\n");
+            return;
+    }
+
+    (*numriAktual)++;
+    printf("Regjistrimi u ruajt me sukses.\n");
+    printf("Numri aktual i regjistrimeve: %d / %d\n", *numriAktual, MAX);
+}
+
+void shfaqRegjistrimet(struct Progresi regjistrimet[], int numriAktual) {
+    if (numriAktual == 0) {
+        printf("Nuk ka regjistrime te ruajtura.\n");
+        return;
+    }
+
+    printf("\n===== TE GJITHA REGJISTRIMET =====\n");
+    for (int i = 0; i < numriAktual; i++) {
+        printf("\nRegjistrimi #%d\n", i + 1);
+        printf("ID       : %d\n", regjistrimet[i].id);
+        printf("Emri     : %s\n", regjistrimet[i].emri);
+        printf("Piket    : %.2lf\n", regjistrimet[i].pike);
+        printf("Statusi  : %s\n", statusNeText(regjistrimet[i].statusi));
+        printf("-----------------------------\n");
+    }
+}
+
+void raportAnalitik(struct Progresi regjistrimet[], int numriAktual) {
+    if (numriAktual == 0) {
+        printf("\n===== RAPORT ANALITIK =====\n");
+        printf("Nuk ka te dhena per analize.\n");
+        return;
+    }
+
+    int nrFillestar = 0, nrMesatar = 0, nrAvancuar = 0;
+    double shuma = 0;
+    double maxPike = regjistrimet[0].pike;
+    double minPike = regjistrimet[0].pike;
+
+    for (int i = 0; i < numriAktual; i++) {
+        shuma += regjistrimet[i].pike;
+
+        if (regjistrimet[i].pike > maxPike) {
+            maxPike = regjistrimet[i].pike;
+        }
+
+        if (regjistrimet[i].pike < minPike) {
+            minPike = regjistrimet[i].pike;
+        }
+
+        if (regjistrimet[i].statusi == FILLESTAR) {
+            nrFillestar++;
+        } else if (regjistrimet[i].statusi == MESATAR) {
+            nrMesatar++;
+        } else if (regjistrimet[i].statusi == AVANCUAR) {
+            nrAvancuar++;
+        }
+    }
+
+    double mesatarja = shuma / numriAktual;
+
+    printf("\n===== RAPORT ANALITIK =====\n");
+    printf("Numri total i regjistrimeve : %d\n", numriAktual);
+    printf("Mesatarja e pikeve          : %.2lf\n", mesatarja);
+    printf("Piket me te larta           : %.2lf\n", maxPike);
+    printf("Piket me te uleta           : %.2lf\n", minPike);
+    printf("Fillestar                   : %d\n", nrFillestar);
+    printf("Mesatar                     : %d\n", nrMesatar);
+    printf("Avancuar                    : %d\n", nrAvancuar);
+
+    if (mesatarja >= 80) {
+        printf("Vleresim: Performanca e grupit eshte shume e mire.\n");
+    } else if (mesatarja >= 60) {
+        printf("Vleresim: Performanca e grupit eshte e kenaqshme.\n");
+    } else {
+        printf("Vleresim: Grupi ka nevoje per permiresim.\n");
+    }
+}
+
+int main() {
+    struct Progresi regjistrimet[MAX];
+    int numriAktual = 0;
+    int zgjedhja;
+
+    do {
+        printf("\n===== STUDENT PROGRESS TRACKER =====\n");
+        printf("1. Shto regjistrim te ri\n");
+        printf("2. Shfaq te gjitha regjistrimet\n");
+        printf("3. Shfaq raportin analitik\n");
+        printf("4. Dil\n");
+        printf("Zgjedhja: ");
+        scanf("%d", &zgjedhja);
+
+        switch (zgjedhja) {
+            case 1:
+                shtoRegjistrim(regjistrimet, &numriAktual);
+                break;
+            case 2:
+                shfaqRegjistrimet(regjistrimet, numriAktual);
+                break;
+            case 3:
+                raportAnalitik(regjistrimet, numriAktual);
+                break;
+            case 4:
+                printf("Programi u mbyll.\n");
+                break;
+            default:
+                printf("Zgjedhje e pavlefshme. Provo perseri.\n");
+        }
+
+    } while (zgjedhja != 4);
+
+    return 0;
+}
